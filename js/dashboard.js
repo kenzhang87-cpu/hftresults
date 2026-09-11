@@ -564,15 +564,18 @@
         ? `${METRIC_LABEL[state.metric]} · quarterly observations only. Annual-only firms have empty series.`
         : `${METRIC_LABEL[state.metric]} · annual observations only. FY-ended labels map to the year in the period (tooltip keeps the original). YTD / half-year prints stay in the table.`;
 
-    els.chartEmpty.hidden = anyPoint || datasets.length === 0;
     if (!datasets.length) {
       els.chartEmpty.hidden = false;
       els.chartEmpty.textContent = "Select one or more firms.";
     } else if (!anyPoint) {
+      els.chartEmpty.hidden = false;
       els.chartEmpty.textContent =
         state.grain === "quarter"
           ? "No quarterly observations for this metric among the selected firms. That is a real gap — try Annual."
           : "No annual observations for this metric among the selected firms.";
+    } else {
+      els.chartEmpty.hidden = true;
+      els.chartEmpty.textContent = "";
     }
 
     const pointMeta = datasets.map((ds) => {
@@ -612,6 +615,7 @@
             grid: { color: "#eeeae2" },
           },
           y: {
+            beginAtZero: true,
             title: { display: true, text: yTitle },
             grid: { color: "#eeeae2" },
             ticks: {

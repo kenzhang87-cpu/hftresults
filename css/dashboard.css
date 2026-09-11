@@ -221,6 +221,11 @@ h2 {
   padding: 24px;
   color: var(--muted);
   text-align: center;
+  pointer-events: none;
+}
+
+.empty-msg[hidden] {
+  display: none;
 }
 
 .table-wrap {
