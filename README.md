@@ -22,7 +22,42 @@ npx serve
 
 Then open `http://localhost:8000`.
 
-Asset URLs are relative to the page directory (a `<base href>` is set from `location`), so the same files also work under a subdirectory such as `/hftresults/` on a Caddy static host. Upload the tree as-is; do not inline estimated numbers from the old page.
+Asset URLs are relative to the page directory (a `<base href>` is set from `location`), so the same files also work under a subdirectory such as `/hftresults/` on a Caddy static host.
+
+## Drop onto Caddy (`https://kenzhang.tech/hftresults/`)
+
+Zero build. The live path is currently a **single HTML file**; replace it with this **directory** (keep the trailing slash on the public URL).
+
+Upload this tree as `/hftresults/` (or into whatever document-root folder Caddy already maps to that path):
+
+```
+hftresults/
+  index.html
+  css/
+    dashboard.css
+  js/
+    dashboard.js
+    chart.umd.min.js
+  data/
+    observations.json
+  docs/
+    firms.md
+    gaps.md
+    sources.md
+    legacy-site-capture.md
+```
+
+Do **not** upload `.git/`, `.nojekyll`, or `README.md` (optional). Do **not** paste numbers from the old page into `observations.json`.
+
+If Caddy today serves a file named `hftresults` rather than a directory, rename that file aside and create the directory above. `file_server` with a directory index of `index.html` is enough; no build command.
+
+After upload, check:
+
+- `https://kenzhang.tech/hftresults/` — dashboard, chart, table
+- `https://kenzhang.tech/hftresults/data/observations.json` — JSON
+- `https://kenzhang.tech/hftresults/css/dashboard.css` — stylesheet
+
+This repo does not contain host credentials. Someone with write access to the Caddy document root has to copy the files.
 
 ## What you can do on the page
 
