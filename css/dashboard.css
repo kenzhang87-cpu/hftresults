@@ -213,15 +213,9 @@ h2 {
 }
 
 .empty-msg {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  margin: 0;
-  padding: 24px;
+  margin: 10px 0 0;
   color: var(--muted);
-  text-align: center;
-  pointer-events: none;
+  font-size: 13.5px;
 }
 
 .empty-msg[hidden] {
