@@ -134,9 +134,14 @@ h2 {
 }
 
 .control-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+  align-items: flex-start;
+}
+
+.control-row .control-block {
+  flex: 0 1 auto;
 }
 
 .firm-list {
@@ -437,7 +442,7 @@ code {
 
 @media (max-width: 900px) {
   .control-row {
-    grid-template-columns: 1fr 1fr;
+    gap: 16px 24px;
   }
 }
 
