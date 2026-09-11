@@ -1,7 +1,44 @@
 (() => {
   "use strict";
 
-  const DATA_URL = "data/observations.json";
+  function pageDir() {
+    const url = new URL(window.location.href);
+    let path = url.pathname;
+    if (/\/index\.html$/i.test(path)) path = path.replace(/index\.html$/i, "/");
+    if (!path.endsWith("/")) path += "/";
+    url.pathname = path;
+    url.search = "";
+    url.hash = "";
+    return url;
+  }
+
+  const DATA_URL = new URL("data/observations.json", pageDir()).href;
+
+  const FIRM_ORDER = [
+    "Jane Street",
+    "Citadel Securities",
+    "Hudson River Trading",
+    "XTX Markets",
+    "Optiver",
+    "IMC Trading",
+    "Virtu Financial",
+    "Flow Traders",
+    "Wolverine Trading",
+    "Quadrature Capital",
+  ];
+
+  const FIRM_ABBR = {
+    "Jane Street": "JS",
+    "Citadel Securities": "CS",
+    "Hudson River Trading": "HRT",
+    "XTX Markets": "XTX",
+    "Optiver": "OPT",
+    "IMC Trading": "IMC",
+    "Virtu Financial": "VIRT",
+    "Flow Traders": "FLOW",
+    "Wolverine Trading": "WLV",
+    "Quadrature Capital": "QC",
+  };
 
   const FIRM_COLORS = {
     "Jane Street": "#1d4ed8",
@@ -37,7 +74,8 @@
     selected: new Set(),
     metric: "revenue",
     grain: "annual",
-    sort: { key: "firm", dir: "asc" },
+    year: "all",
+    sort: { key: "period", dir: "desc" },
     chart: null,
   };
 
@@ -46,6 +84,7 @@
     selectAll: document.getElementById("select-all"),
     clearAll: document.getElementById("clear-all"),
     grainHint: document.getElementById("grain-hint"),
+    yearList: document.getElementById("year-list"),
     chartCaption: document.getElementById("chart-caption"),
     chartEmpty: document.getElementById("chart-empty"),
     tableCaption: document.getElementById("table-caption"),
@@ -248,6 +287,7 @@
       const id = `firm-${firm.replace(/\s+/g, "-").toLowerCase()}`;
       const label = document.createElement("label");
       label.htmlFor = id;
+      label.title = firm;
       const input = document.createElement("input");
       input.type = "checkbox";
       input.id = id;
@@ -264,9 +304,52 @@
       swatch.style.height = "10px";
       swatch.style.background = FIRM_COLORS[firm] || "#444";
       swatch.style.flex = "0 0 10px";
-      label.append(input, swatch, document.createTextNode(firm));
+      const abbr = document.createElement("span");
+      abbr.className = "abbr";
+      abbr.textContent = FIRM_ABBR[firm] || firm;
+      const full = document.createElement("span");
+      full.className = "full";
+      full.textContent = firm;
+      label.append(input, swatch, abbr, full);
       els.firmList.append(label);
     }
+  }
+
+  function availableYears() {
+    const years = new Set();
+    for (const obs of state.observations) {
+      if (!grainMatch(obs)) continue;
+      const year = periodYear(obs.period);
+      if (year) years.add(year);
+    }
+    return [...years].sort((a, b) => b - a);
+  }
+
+  function renderYearFilter() {
+    const years = availableYears();
+    if (state.year !== "all" && !years.includes(state.year)) state.year = "all";
+    els.yearList.replaceChildren();
+    const options = [["all", "All"], ...years.map((y) => [String(y), String(y)])];
+    for (const [value, labelText] of options) {
+      const label = document.createElement("label");
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = "table-year";
+      input.value = value;
+      input.checked = String(state.year) === value;
+      input.addEventListener("change", () => {
+        if (!input.checked) return;
+        state.year = value === "all" ? "all" : Number(value);
+        render();
+      });
+      label.append(input, document.createTextNode(` ${labelText}`));
+      els.yearList.append(label);
+    }
+  }
+
+  function filterRowsByYear(rows) {
+    if (state.year === "all") return rows;
+    return rows.filter((row) => periodYear(row.period) === state.year);
   }
 
   function cellTooltip(cell) {
@@ -369,7 +452,7 @@
       els.tbody.append(tr);
     }
 
-    els.tableCaption.textContent = `${sorted.length} period row${sorted.length === 1 ? "" : "s"} for ${state.selected.size} firm${state.selected.size === 1 ? "" : "s"}. Blank cells are missing observations.`;
+    els.tableCaption.textContent = `${sorted.length} period row${sorted.length === 1 ? "" : "s"} for ${state.selected.size} firm${state.selected.size === 1 ? "" : "s"}${state.year === "all" ? "" : ` in ${state.year}`}. Blank cells are missing observations.`;
   }
 
   function compareRows(a, b, key) {
@@ -638,8 +721,9 @@
 
   function render() {
     const cells = groupCells(selectedObservations());
-    const rows = tableRows(cells);
     renderGrainHint();
+    renderYearFilter();
+    const rows = filterRowsByYear(tableRows(cells));
     renderChart(cells);
     renderTable(rows);
     renderSources(rows);
@@ -707,12 +791,19 @@
     }
     state.payload = payload;
     state.observations = payload.observations || [];
-    state.firms = payload.firms || [...new Set(state.observations.map((o) => o.firm))].sort();
+    const names = payload.firms || [...new Set(state.observations.map((o) => o.firm))];
+    state.firms = [...names].sort((a, b) => {
+      const ia = FIRM_ORDER.indexOf(a);
+      const ib = FIRM_ORDER.indexOf(b);
+      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib) || a.localeCompare(b);
+    });
     state.selected = new Set(state.firms);
     const meta = document.querySelector(".meta");
     if (meta && payload.generated) {
       meta.textContent = `Research access date ${payload.generated}. ${payload.observation_count} observations. ${payload.units_note || ""}`;
     }
+    const badge = document.getElementById("updated-badge");
+    if (badge && payload.generated) badge.textContent = `Research ${payload.generated}`;
     renderFirms();
     render();
   }

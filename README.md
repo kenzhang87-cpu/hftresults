@@ -22,15 +22,16 @@ npx serve
 
 Then open `http://localhost:8000`.
 
-GitHub Pages can host the root as-is (`index.html` + `css/` + `js/` + `data/`).
+Asset URLs are relative to the page directory (a `<base href>` is set from `location`), so the same files also work under a subdirectory such as `/hftresults/` on a Caddy static host. Upload the tree as-is; do not inline estimated numbers from the old page.
 
 ## What you can do on the page
 
 - Multi-select any subset of firms (default: all firms that have at least one observation). Select all / clear all.
 - Toggle the chart metric: Revenue, Net income, Capital, or Headcount.
-- Toggle period grain: **Annual** or **Quarterly**.
+- Toggle chart grain: **Annual** or **Quarterly**.
   - Quarterly plots only `period_type=quarter`. Annual-only firms show empty series. That is correct.
   - Annual plots only `period_type=annual`. FY / FY-ended labels are mapped to the year in the period; the original label stays in the table and tooltips.
+- Filter **table years** (All, or a single year). The chart still shows the full series.
 - Sort the table. Hover a number for line item (ANTI vs NTR vs turnover are not the same), native currency, excerpt, and conflicts.
 - See unique sources for the rows currently in view. Full bibliography: [`docs/sources.md`](docs/sources.md).
 
@@ -57,9 +58,12 @@ Public names (Virtu, Flow) have dense quarterly series. Most private firms are a
 | [`docs/firms.md`](docs/firms.md) | Per-firm public status, what is known, entity caveats |
 | [`docs/sources.md`](docs/sources.md) | Bibliography (86 URLs) and FX table |
 | [`docs/gaps.md`](docs/gaps.md) | Explicit firm × period × metric holes |
+| [`docs/legacy-site-capture.md`](docs/legacy-site-capture.md) | Old live UI capture — layout reference only, not a data source |
 
 Numbers in those notes match the observation file. If they ever diverge, trust `data/observations.json` and file a correction — do not “smooth” the dashboard.
 
+[`docs/legacy-site-capture.md`](docs/legacy-site-capture.md) is a capture of the old [kenzhang.tech/hftresults](https://kenzhang.tech/hftresults) UI (KPI cards, annual table, `~est` filler, derived ROC / margin / PNL-per-head). **Use it as layout context only.** Do not copy estimated or interpolated legacy annual cells into `data/observations.json` or this dashboard unless the same figure already exists as a sourced observation. Prefer a hole.
+
 ## What this replaces
 
-An earlier dashboard at [kenzhang.tech/hftresults](https://kenzhang.tech/hftresults) (snapshot around 2026-04-07) showed annual trading PNL / NI / headcount / capital plus derived KPIs (PNL per head, ROC, margin) and estimate methodology. This version keeps the three raw series in the primary view and leaves methodology in `docs/` plus a collapsible footer.
+The April 2026 live page showed a dense annual grid plus KPI cards. This page keeps firm multi-select and a historical table, drops derived KPIs, and only plots sourced rows. Layout cues taken from the old site: compact firm pills (JS / CS / HRT / …), a table-year filter (default **All**, not a single year that hides gaps), and newest-period-first sorting.

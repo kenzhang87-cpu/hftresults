@@ -51,7 +51,25 @@ a:hover {
 }
 
 .site-header {
-  padding: 48px 0 20px;
+  padding: 36px 0 16px;
+}
+
+.title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.badge-date {
+  margin: 4px 0 0;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 .eyebrow {
@@ -117,26 +135,31 @@ h2 {
 
 .control-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
 }
 
 .firm-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 .firm-list label {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
+  gap: 7px;
+  padding: 5px 9px;
   background: var(--paper);
   border: 1px solid var(--line);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   user-select: none;
+}
+
+.firm-list label:has(input:checked) {
+  background: var(--accent-soft);
+  border-color: #9bb7a8;
 }
 
 .firm-list label:has(input:focus-visible) {
@@ -146,6 +169,15 @@ h2 {
 
 .firm-list input {
   margin: 0;
+}
+
+.firm-list .abbr {
+  font-weight: 650;
+  letter-spacing: 0.03em;
+}
+
+.firm-list .full {
+  color: var(--muted);
 }
 
 .text-btn {
@@ -399,9 +431,27 @@ code {
   border: 1px solid #e0b4ac;
 }
 
+.year-list {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .control-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (max-width: 720px) {
+  .title-row {
+    flex-direction: column;
+  }
+
   .control-row {
     grid-template-columns: 1fr;
+  }
+
+  .firm-list .full {
+    display: none;
   }
 
   .source-list li {
