@@ -142,3 +142,33 @@ Total unique URLs used in observations.jsonl: 86
 - `/workspace/hft-research/virtu/` — Virtu 8-K EX-99.1 HTML dumps
 - `/workspace/hft-research/flow/` — Flow Traders press PDFs/TXT
 - `imc-2025.pdf`, `wolverine-2024.pdf`, `wolverine-2025.pdf`, Flow 4Q25/4Q24 PDFs
+
+
+## Additional sources added 2026-11-25
+- https://www.bloomberg.com/news/articles/2026-11-25/hrt-trading-revenue-tops-21-billion-eclipsing-full-year-record (accessed 2026-11-25)
+- https://hk.finance.yahoo.com/news/hrt%E5%89%8D%E4%B9%9D%E5%80%8B%E6%9C%88%E4%BA%A4%E6%98%93%E6%94%B6%E5%85%A5%E9%81%94214%E5%84%84%E7%BE%8E%E5%85%83-%E8%B6%85%E9%81%8E%E5%8E%BB%E5%B9%B4%E5%85%A8%E5%B9%B4%E7%B4%80%E9%8C%84-035521250.html (accessed 2026-11-25)
+- https://www.investing.com/news/stock-market-news/citadel-securities-tops-2025-revenue-record-in-9-months-5048899 (accessed 2026-11-25)
+- https://www.sec.gov/Archives/edgar/data/1592386/000110465926123022/tm2629046d1_ex99-1.htm (accessed 2026-11-25)
+- https://www.sec.gov/Archives/edgar/data/1592386/000159238626000034/virt-20260930.htm (accessed 2026-11-25)
+- https://ir.virtu.com/news-releases/news-release-details/virtu-announces-third-quarter-2026-results (accessed 2026-11-25)
+- https://files.quartr.com/conference-calls/a72bf4416514d83a55304f42f692afc4-2026-11-05-12-07-48.pdf?ref=RXhhIEFJ (accessed 2026-11-25)
+- https://www.flowtraders.com/news/flow-traders-3q-2026-trading-update (accessed 2026-11-25)
+- https://www.flowtraders.com/media/wt3kym5w/flow-traders-2q26-results-press-release-vf.pdf (accessed 2026-11-25)
+- https://www.flowtraders.com/media/kuyh0nch/20260424-1q26-trading-update-vf.pdf (accessed 2026-11-25)
+- https://opencompanies.uk/company/09516131/accounts/2026-01-31 (accessed 2026-11-25)
+- https://theaccounts.uk/company/09516131/quadrature-capital-limited/ (accessed 2026-11-25)
+- https://reports.imc.com/90480/1606477/pdfs/5321963b-0cd5-4629-8a2c-50be204d3873.pdf (accessed 2026-11-25)
+- https://reports.imc.com/90480/2209191/pdfs/e574ff41-fd00-466e-b1db-9e4bb657ac50.pdf (accessed 2026-11-25)
+- https://www.optiver.com/insights/news/optiver-reports-solid-results-in-2019/ (accessed 2026-11-25)
+- https://www.optiver.com/insights/news/optiver-reports-its-2020-financial-results/ (accessed 2026-11-25)
+- https://hedgeweek.com/news/griffins-citadel-securities-reports-record-9-7bn-trading-revenue (accessed 2026-11-25)
+- https://www.aicoin.com/en/news-flash/2529056 (accessed 2026-11-25)
+- https://www.bloomberg.com/news/articles/2026-05-08/jane-street-pulls-in-record-16-1-billion-quarterly-trading-haul (accessed 2026-11-25)
+- https://www.bloomberg.com/news/articles/2026-05-29/citadel-securities-reels-in-record-4-3-billion-trading-haul (accessed 2026-11-25)
+- https://www.bloomberg.com/news/articles/2026-08-19/hudson-river-trading-posts-record-11-4-billion-trading-haul (accessed 2026-11-25)
+- https://www.disruptionbanking.com/2026/08/29/citadel-securities-made-3-3b-in-three-months-how-much-of-that-profit-will-its-employees-pocket/ (accessed 2026-11-25)
+- https://www.reuters.com/business/finance/jane-street-took-15-billion-hit-july-tied-situational-awareness-sources-say-2026-08-14/ (accessed 2026-11-25)
+- https://www.bloomberg.com/news/articles/2025-03-06/citadel-securities-9-7-billion-trading-revenue-passes-barclays (accessed 2026-11-25)
+- https://www.bloomberg.com/news/articles/2025-08-29/citadel-securities-second-quarter-trading-revenue-slumps-8-4 (accessed 2026-11-25)
+- https://www.bloomberg.com/news/articles/2024-12-02/jane-street-reaps-14-2-billion-in-first-nine-months-of-trading (accessed 2026-11-25)
+- https://www.bloomberg.com/news/articles/2026-11-24/citadel-securities-trading-revenue-already-tops-full-year-record (accessed 2026-11-25)
