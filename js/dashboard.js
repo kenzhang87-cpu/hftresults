@@ -108,9 +108,14 @@
     if (jan) return Number(jan[1]) * 100 + 8;
     const mar = String(period).match(/^FYeMar(\d{4})$/);
     if (mar) return Number(mar[1]) * 100 + 20;
-    if (period === "2025YTD9m") return 2025 * 100 + 70;
+    const ytd = String(period).match(/^(\d{4})YTD(\d+)m$/i);
+    if (ytd) return Number(ytd[1]) * 100 + 60 + Number(ytd[2]);
+    const mon = String(period).match(/^(\d{4})M(\d{2})$/);
+    if (mon) return Number(mon[1]) * 100 + Number(mon[2]) * 3;
+    const half = String(period).match(/^(\d{4})H([12])$/);
+    if (half) return Number(half[1]) * 100 + (Number(half[2]) === 1 ? 25 : 45);
     const year = periodYear(period);
-    return (year || 0) * 100 + (periodType === "half" ? 70 : 40);
+    return (year || 0) * 100 + (periodType === "half" ? 25 : 40);
   }
 
   function formatPeriod(period) {
@@ -122,7 +127,12 @@
     if (jan) return `FY ended 31 Jan ${jan[1]}`;
     const mar = String(period).match(/^FYeMar(\d{4})$/);
     if (mar) return `FY ended Mar ${mar[1]}`;
-    if (period === "2025YTD9m") return "2025 YTD 9m";
+    const ytd = String(period).match(/^(\d{4})YTD(\d+)m$/i);
+    if (ytd) return `${ytd[1]} YTD ${ytd[2]}m`;
+    const mon = String(period).match(/^(\d{4})M(\d{2})$/);
+    if (mon) return `${mon[1]} M${mon[2]}`;
+    const half = String(period).match(/^(\d{4})H([12])$/);
+    if (half) return `${half[1]} H${half[2]}`;
     return period;
   }
 
@@ -196,7 +206,7 @@
 
   function grainMatch(obs) {
     if (state.grain === "quarter") return obs.period_type === "quarter";
-    return obs.period_type === "annual" || obs.period_type === "half";
+    return obs.period_type === "annual" || obs.period_type === "half" || obs.period_type === "ytd" || obs.period_type === "month";
   }
 
   function chartGrainMatch(obs) {
@@ -270,7 +280,7 @@
     const keys = [];
     for (let year = 2019; year <= 2026; year += 1) {
       for (let q = 1; q <= 4; q += 1) {
-        if (year === 2026 && q > 2) continue;
+        if (year === 2026 && q > 3) continue;
         keys.push(`${year}Q${q}`);
       }
     }
@@ -278,7 +288,7 @@
   }
 
   function buildAnnualKeys() {
-    return ["FY2019", "FY2020", "FY2021", "FY2022", "FY2023", "FY2024", "FY2025"];
+    return ["FY2019", "FY2020", "FY2021", "FY2022", "FY2023", "FY2024", "FY2025", "FY2026"];
   }
 
   function renderFirms() {
@@ -538,13 +548,17 @@
       td.textContent = "—";
       return td;
     }
-    const first = list[0];
-    const a = document.createElement("a");
-    a.href = first.source_url;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    a.textContent = first.source_publisher || "Source";
-    td.append(a);
+    const first = list.find((o) => o.source_url) || list[0];
+    if (first.source_url) {
+      const a = document.createElement("a");
+      a.href = first.source_url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = first.source_publisher || "Source";
+      td.append(a);
+    } else {
+      td.append(document.createTextNode(first.source_publisher || "Source"));
+    }
     if (list.length > 1) {
       td.append(document.createTextNode(` +${list.length - 1}`));
     }
@@ -591,12 +605,18 @@
       const date = document.createElement("span");
       date.className = "date";
       date.textContent = item.date || "date unknown";
-      const link = document.createElement("a");
-      link.href = item.url;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.textContent = item.url;
-      li.append(pub, date, link);
+      if (item.url) {
+        const link = document.createElement("a");
+        link.href = item.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = item.url;
+        li.append(pub, date, link);
+      } else {
+        const span = document.createElement("span");
+        span.textContent = "(no URL)";
+        li.append(pub, date, span);
+      }
       els.sourceList.append(li);
     }
   }

@@ -4,7 +4,7 @@ A static dashboard of **sourced** revenue, net income, capital, and headcount fo
 
 The page is tables plus one plain chart. There are no KPI cards, no derived ROC / margin / PNL-per-head, and no interpolated quarters.
 
-Live data file: [`data/observations.json`](data/observations.json) (240 observations, generated 2026-09-11).
+Live data file: [`data/observations.json`](data/observations.json) (368 observations, generated 2026-11-25).
 
 ## View locally
 
